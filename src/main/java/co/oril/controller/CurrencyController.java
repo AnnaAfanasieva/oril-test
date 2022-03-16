@@ -51,10 +51,9 @@ public class CurrencyController {
 
     }
 
-    //TODO згенерувати звіт CSV, зберегти у файлі
-    //поля: назва криптовалюти, мінімальна ціна, максимальна ціна
-    //Отже, у цьому звіті має бути лише три записи, тому що у нас є три різні криптовалюти
-    public void csvReport() {
-
+    @GetMapping("/csv")
+    public ResponseEntity csvReport() {
+        currencyService.csvReport();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

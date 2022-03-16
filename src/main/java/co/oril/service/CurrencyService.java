@@ -2,12 +2,18 @@ package co.oril.service;
 
 import co.oril.model.Currency;
 import co.oril.repository.CurrencyRepository;
+import co.oril.util.CSV;
 import org.springframework.stereotype.Service;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 @Service
 public class CurrencyService {
 
     private final CurrencyRepository currencyRepository;
+    private static final String PATH_TO_REPORT = "csv/report.csv";
 
     public CurrencyService(CurrencyRepository currencyRepository) {
         this.currencyRepository = currencyRepository;
@@ -38,10 +44,25 @@ public class CurrencyService {
 
     }
 
-    //TODO згенерувати звіт CSV, зберегти у файлі
-    //поля: назва криптовалюти, мінімальна ціна, максимальна ціна
-    //Отже, у цьому звіті має бути лише три записи, тому що у нас є три різні криптовалюти
     public void csvReport() {
+        List<Currency> currenciesBTC = currencyRepository.findAllByCurrencyName("BTC");
+        List<Currency> currenciesETH = currencyRepository.findAllByCurrencyName("ETH");
+        List<Currency> currenciesXRP = currencyRepository.findAllByCurrencyName("XRP");
+        String recordBTC = CSV.createLineFromList(currenciesBTC);
+        String recordETH = CSV.createLineFromList(currenciesETH);
+        String recordXRP = CSV.createLineFromList(currenciesXRP);
 
+        File file = new File(PATH_TO_REPORT);
+        if (!file.isFile()) {
+            try {
+                boolean newFile = file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        CSV.cleanCSVFile(PATH_TO_REPORT);
+        CSV.writeStringToCSVFile(PATH_TO_REPORT, recordBTC);
+        CSV.writeStringToCSVFile(PATH_TO_REPORT, recordETH);
+        CSV.writeStringToCSVFile(PATH_TO_REPORT, recordXRP);
     }
 }
