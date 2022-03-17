@@ -1,8 +1,8 @@
-#Java Test Task
+# Java Test Task
 
 Run Application: run ```StartApplication.sh``` file
 
-##Task
+## Task
 
 Technical task itself consists of two main parts and one optional:
 1. Collect data.\
