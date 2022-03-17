@@ -1,7 +1,8 @@
-package co.oril.service;
+package co.oril.service.impl;
 
 import co.oril.model.Currency;
 import co.oril.repository.CurrencyRepository;
+import co.oril.service.BaseService;
 import co.oril.util.CSV;
 import co.oril.util.FindMinAndMaxPrice;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @Service
-public class CurrencyService {
+public class CurrencyService implements BaseService {
 
     private final CurrencyRepository currencyRepository;
     private static final String PATH_TO_REPORT = "csv/report.csv";

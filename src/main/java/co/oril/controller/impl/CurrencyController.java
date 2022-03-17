@@ -1,7 +1,8 @@
-package co.oril.controller;
+package co.oril.controller.impl;
 
+import co.oril.controller.BaseController;
 import co.oril.model.Currency;
-import co.oril.service.CurrencyService;
+import co.oril.service.impl.CurrencyService;
 import co.oril.util.ParseFromCite;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cryptocurrencies")
-public class CurrencyController {
+public class CurrencyController extends BaseController {
 
     private final CurrencyService currencyService;
 
