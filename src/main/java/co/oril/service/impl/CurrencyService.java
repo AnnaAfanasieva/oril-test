@@ -28,12 +28,20 @@ public class CurrencyService implements BaseService {
 
     public Double minPrice(String currencyName) {
         List<Currency> currencies = currencyRepository.findAllByCurrencyName(currencyName);
-        return FindMinAndMaxPrice.findMinPrice(currencies);
+        if (currencies.size() == 0) {
+            throw new RuntimeException("not exist by name");
+        } else {
+            return FindMinAndMaxPrice.findMinPrice(currencies);
+        }
     }
 
     public Double maxPrice(String currencyName) {
         List<Currency> currencies = currencyRepository.findAllByCurrencyName(currencyName);
-        return FindMinAndMaxPrice.findMaxPrice(currencies);
+        if (currencies.size() == 0) {
+            throw new RuntimeException("not exist by name");
+        } else {
+            return FindMinAndMaxPrice.findMaxPrice(currencies);
+        }
     }
 
     public List<Currency> listOfPrices(String currencyName, Long page, Long size) {

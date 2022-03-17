@@ -34,7 +34,11 @@ public class CurrencyController extends BaseController {
 
     @GetMapping("/minprice")
     public ResponseEntity<String> minPrice(@RequestParam(value = "name") String currencyName) {
-        return ResponseEntity.ok(Json.priceToJson(currencyService.minPrice(currencyName)));
+        try {
+            return ResponseEntity.ok(Json.priceToJson(currencyService.minPrice(currencyName)));
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/maxprice")
