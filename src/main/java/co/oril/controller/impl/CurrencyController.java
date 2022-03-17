@@ -3,12 +3,11 @@ package co.oril.controller.impl;
 import co.oril.controller.BaseController;
 import co.oril.model.Currency;
 import co.oril.service.impl.CurrencyService;
+import co.oril.util.Json;
 import co.oril.util.ParseFromCite;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/cryptocurrencies")
@@ -32,17 +31,17 @@ public class CurrencyController extends BaseController {
     }
 
     @GetMapping("/minprice")
-    public ResponseEntity<Double> minPrice(@RequestParam(value = "name") String currencyName) {
-        return ResponseEntity.ok(currencyService.minPrice(currencyName));
+    public ResponseEntity<String> minPrice(@RequestParam(value = "name") String currencyName) {
+        return ResponseEntity.ok(Json.priceToJson(currencyService.minPrice(currencyName)));
     }
 
     @GetMapping("/maxprice")
-    public ResponseEntity<Double> maxPrice(@RequestParam(value = "name") String currencyName) {
-        return ResponseEntity.ok(currencyService.maxPrice(currencyName));
+    public ResponseEntity<String> maxPrice(@RequestParam(value = "name") String currencyName) {
+        return ResponseEntity.ok(Json.priceToJson(currencyService.maxPrice(currencyName)));
     }
 
     @GetMapping()
-    public ResponseEntity<List<Currency>> listOfPrices(
+    public ResponseEntity<String> listOfPrices(
             @RequestParam(value = "name") String currencyName,
             @RequestParam(value = "page", required = false) Long page,
             @RequestParam(value = "size", required = false) Long size) {
@@ -52,7 +51,8 @@ public class CurrencyController extends BaseController {
         if (size == null) {
             size = 10L;
         }
-        return ResponseEntity.ok(currencyService.listOfPrices(currencyName, page, size));
+
+        return ResponseEntity.ok(Json.listToJson(currencyService.listOfPrices(currencyName, page, size)));
     }
 
     @GetMapping("/csv")
