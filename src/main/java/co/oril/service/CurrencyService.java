@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -34,13 +35,20 @@ public class CurrencyService {
         return FindMinAndMaxPrice.findMaxPrice(currencies);
     }
 
-    //TODO повернути вибрану сторінку з вибраною кількістю елементів
-    //сортування за умовчанням має здійснюватися за ціною від найнижчої до найвищої
-
-    //Параметри запиту [page_number] і [page_size] мають бути необов’язковими
-    //якщо вони відсутні, ви повинні встановити для них значення за замовчуванням page=0, size=10
-    public void listOfPrices() {
-
+    public List<Currency> listOfPrices(String currencyName, Long page, Long size) {
+        List<Currency> currencies = currencyRepository.findAllByCurrencyNameOrderByCurrencyPrice(currencyName);
+        currencies = currencies.stream().sorted(Comparator.comparingDouble(Currency::getCurrencyPrice)).toList();
+        int startCurrency = (int) (page * size);
+        int endCurrency = (int) ((page + 1) * size);
+        int sizeCurrencies = currencies.size();
+        if (startCurrency > sizeCurrencies || startCurrency < 0) {
+            throw new RuntimeException("invalid page or size");
+        }
+        if (endCurrency > sizeCurrencies) {
+            endCurrency = sizeCurrencies;
+        }
+        currencies = currencies.subList(startCurrency, endCurrency);
+        return currencies;
     }
 
     public void csvReport() {

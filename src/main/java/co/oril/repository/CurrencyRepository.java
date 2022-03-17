@@ -10,4 +10,7 @@ public interface CurrencyRepository extends MongoRepository<Currency, String> {
 
     @Query("{'currencyName':?0}")
     List<Currency> findAllByCurrencyName(String name);
+
+    @Query("{'currencyName':?0}")
+    List<Currency> findAllByCurrencyNameOrderByCurrencyPrice(String name);
 }

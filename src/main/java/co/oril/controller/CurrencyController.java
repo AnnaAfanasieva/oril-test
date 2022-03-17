@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/cryptocurrencies")
 public class CurrencyController {
@@ -29,22 +31,27 @@ public class CurrencyController {
     }
 
     @GetMapping("/minprice")
-    public ResponseEntity<Double> minPrice(@RequestParam(value = "name", required = false) String currencyName) {
+    public ResponseEntity<Double> minPrice(@RequestParam(value = "name") String currencyName) {
         return ResponseEntity.ok(currencyService.minPrice(currencyName));
     }
 
     @GetMapping("/maxprice")
-    public ResponseEntity maxPrice(@RequestParam(value = "name", required = false) String currencyName) {
+    public ResponseEntity<Double> maxPrice(@RequestParam(value = "name") String currencyName) {
         return ResponseEntity.ok(currencyService.maxPrice(currencyName));
     }
 
-    //TODO повернути вибрану сторінку з вибраною кількістю елементів
-    //сортування за умовчанням має здійснюватися за ціною від найнижчої до найвищої
-
-    //Параметри запиту [page_number] і [page_size] мають бути необов’язковими
-    //якщо вони відсутні, ви повинні встановити для них значення за замовчуванням page=0, size=10
-    public void listOfPrices() {
-
+    @GetMapping()
+    public ResponseEntity<List<Currency>> listOfPrices(
+            @RequestParam(value = "name") String currencyName,
+            @RequestParam(value = "page", required = false) Long page,
+            @RequestParam(value = "size", required = false) Long size) {
+        if (page == null) {
+            page = 0L;
+        }
+        if (size == null) {
+            size = 10L;
+        }
+        return ResponseEntity.ok(currencyService.listOfPrices(currencyName, page, size));
     }
 
     @GetMapping("/csv")
