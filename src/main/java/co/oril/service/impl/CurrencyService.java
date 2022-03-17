@@ -43,7 +43,7 @@ public class CurrencyService implements BaseService {
         int endCurrency = (int) ((page + 1) * size);
         int sizeCurrencies = currencies.size();
         if (startCurrency > sizeCurrencies || startCurrency < 0) {
-            throw new RuntimeException("invalid page or size");
+            return null;
         }
         if (endCurrency > sizeCurrencies) {
             endCurrency = sizeCurrencies;

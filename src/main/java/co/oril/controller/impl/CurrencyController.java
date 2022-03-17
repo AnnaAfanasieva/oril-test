@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/cryptocurrencies")
 public class CurrencyController extends BaseController {
@@ -52,7 +54,12 @@ public class CurrencyController extends BaseController {
             size = 10L;
         }
 
-        return ResponseEntity.ok(Json.listToJson(currencyService.listOfPrices(currencyName, page, size)));
+        List<Currency> currencies = currencyService.listOfPrices(currencyName, page, size);
+        if (currencies == null) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        } else {
+            return ResponseEntity.ok(Json.listToJson(currencies));
+        }
     }
 
     @GetMapping("/csv")
