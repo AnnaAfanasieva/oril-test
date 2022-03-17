@@ -5,9 +5,7 @@ import co.oril.service.CurrencyService;
 import co.oril.util.ParseFromCite;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/cryptocurrencies")
@@ -30,16 +28,14 @@ public class CurrencyController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    //TODO повернути запис із найнижчою ціною вибраної криптовалюти
-    //(інакше - помилка)
-    public void minPrice() {
-
+    @GetMapping("/minprice")
+    public ResponseEntity<Double> minPrice(@RequestParam(value = "name", required = false) String currencyName) {
+        return ResponseEntity.ok(currencyService.minPrice(currencyName));
     }
 
-    //TODO повернути запис із найвищою ціною вибраної криптовалюти
-    //(інакше - помилка)
-    public void maxPrice() {
-
+    @GetMapping("/maxprice")
+    public ResponseEntity maxPrice(@RequestParam(value = "name", required = false) String currencyName) {
+        return ResponseEntity.ok(currencyService.maxPrice(currencyName));
     }
 
     //TODO повернути вибрану сторінку з вибраною кількістю елементів

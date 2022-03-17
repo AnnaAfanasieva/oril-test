@@ -3,6 +3,7 @@ package co.oril.service;
 import co.oril.model.Currency;
 import co.oril.repository.CurrencyRepository;
 import co.oril.util.CSV;
+import co.oril.util.FindMinAndMaxPrice;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -23,16 +24,14 @@ public class CurrencyService {
         currencyRepository.insert(currency);
     }
 
-    //TODO повернути запис із найнижчою ціною вибраної криптовалюти
-    //(інакше - помилка)
-    public void minPrice() {
-
+    public Double minPrice(String currencyName) {
+        List<Currency> currencies = currencyRepository.findAllByCurrencyName(currencyName);
+        return FindMinAndMaxPrice.findMinPrice(currencies);
     }
 
-    //TODO повернути запис із найвищою ціною вибраної криптовалюти
-    //(інакше - помилка)
-    public void maxPrice() {
-
+    public Double maxPrice(String currencyName) {
+        List<Currency> currencies = currencyRepository.findAllByCurrencyName(currencyName);
+        return FindMinAndMaxPrice.findMaxPrice(currencies);
     }
 
     //TODO повернути вибрану сторінку з вибраною кількістю елементів

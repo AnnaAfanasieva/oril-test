@@ -41,7 +41,7 @@ public final class CSV {
         Double maxPrice = FindMinAndMaxPrice.findMaxPrice(currencies);
         newLine.append(currencies.get(0).getCurrencyName()).append(SEPARATOR);
         newLine.append(minPrice).append(SEPARATOR);
-        newLine.append(maxPrice).append("\n");
+        newLine.append(maxPrice);
         return newLine.toString();
     }
 }
